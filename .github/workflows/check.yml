@@ -1,0 +1,22 @@
+name: Proje Derleme Kontrolü
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Kodlari Cek
+      uses: actions/checkout@v4
+
+    - name: MSBuild Kurulumu
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Eksik Paketleri Tamamla
+      run: nuget restore src/ConsoleApp2.csproj
+
+    - name: Projeyi Derle (Release Mode)
+      run: msbuild src/ConsoleApp2.csproj /p:Configuration=Release
