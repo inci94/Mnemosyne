@@ -1,7 +1,9 @@
-name: Proje Derleme Kontrolü
+name: .NET Build Pipeline
 
 on:
   push:
+    branches: [ "main", "master" ]
+  pull_request:
     branches: [ "main", "master" ]
 
 jobs:
@@ -9,14 +11,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Kodlari Cek
+    - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: MSBuild Kurulumu
+    - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
-    - name: Eksik Paketleri Tamamla
-      run: nuget restore src/ConsoleApp2.csproj
+    - name: Restore NuGet Packages
+      run: nuget restore src/ConsoleApp2.csproj -PackagesDirectory src/packages
 
-    - name: Projeyi Derle (Release Mode)
-      run: msbuild src/ConsoleApp2.csproj /p:Configuration=Release
+    - name: Build Project
+      run: msbuild src/ConsoleApp2.csproj /p:Configuration=Release /p:RestorePackages=false
