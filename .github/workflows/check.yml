@@ -18,8 +18,8 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1
 
-    - name: Restore NuGet Packages
-      run: nuget restore src/ConsoleApp2.csproj -PackagesDirectory src/packages
-
-    - name: Build Project
-      run: msbuild src/ConsoleApp2.csproj /p:Configuration=Release /p:RestorePackages=false
+    - name: Restore and Build
+      run: |
+        cd src
+        nuget restore
+        msbuild /p:Configuration=Release
